@@ -1,24 +1,17 @@
-/* YC Mainpage FY27 — SIXSHOP loader v20261123-03 */
+/* YC Mainpage FY27 — SIXSHOP loader v20261123-04 */
 (() => {
   'use strict';
-  const PATH = '/';
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261123-03';
+  const VERSION = '20261123-04';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
   let disposers=[];
   let rootGuard=false;
-  const hasRoute = () => location.pathname === PATH;
-  // The SIXSHOP homepage uses its own page ID, which may differ from the preview page.
-  // Match only the actual homepage route and an active SIXSHOP page container.
-  const page = () => {
-    if (!hasRoute()) return null;
-    const candidates = Array.from(document.querySelectorAll('[id^="page"]'));
-    return candidates.find(el => /^page\\d+$/.test(el.id) && el.getClientRects().length > 0 && getComputedStyle(el).display !== 'none') || null;
-  };
+  const hasRoute = () => location.pathname === '/' || location.pathname === '/main-page-fy27' || location.pathname === '/main-page-fy27/';
+  const page = () => document.getElementById(PAGE_ID);
   const shouldMount = () => hasRoute() && !!page();
   function getTrackedUtms() {
     try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {}; }

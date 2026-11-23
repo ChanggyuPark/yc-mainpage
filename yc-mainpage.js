@@ -1,11 +1,11 @@
-/* YC Mainpage FY27 — SIXSHOP loader v20261123-01 */
+/* YC Mainpage FY27 — SIXSHOP loader v20261123-02 */
 (() => {
   'use strict';
   const PATH = '/main-page-fy27';
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261123-01';
+  const VERSION = '20261123-02';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
@@ -106,31 +106,7 @@
       }
     };
     shadow.addEventListener('click',anchorClick);disposers.push(()=>shadow.removeEventListener('click',anchorClick));
-    // Source HTML's wheel/touch step-jump behavior, with detachable handlers for SPA navigation.
-    const hero=get('.yc-cover'),overview=get('#manufacturing'),firstStage=get('#stage-1');
-    if (!hero||!overview||!firstStage||reduced)return;
-    let locked=false,startY=0,unlockTimer=0;
-    const inView=el=>{const r=el.getBoundingClientRect();return r.top<innerHeight*.65&&r.bottom>innerHeight*.35};
-    function targetNext(){
-      if(inView(hero)&&scrollY<hero.offsetHeight*.75)return overview;
-      if(inView(overview)||inView(map||overview)){
-        const r=firstStage.getBoundingClientRect();
-        if(r.top>innerHeight*.15)return firstStage;
-      }
-      return null;
-    }
-    function advance(){if(locked)return false;const el=targetNext();if(!el)return false;
-      locked=true;el.scrollIntoView({behavior:'smooth',block:'start'});
-      unlockTimer=setTimeout(()=>locked=false,950);return true;
-    }
-    const wheel=e=>{if(!root.isConnected||e.ctrlKey||e.metaKey||e.deltaY<24||locked)return;
-      if(targetNext()){e.preventDefault();advance()}};
-    const touchStart=e=>{startY=e.touches[0]?.clientY??0};
-    const touchEnd=e=>{const delta=startY-(e.changedTouches[0]?.clientY??startY);if(delta>56)advance()};
-    window.addEventListener('wheel',wheel,{passive:false});
-    window.addEventListener('touchstart',touchStart,{passive:true});
-    window.addEventListener('touchend',touchEnd,{passive:true});
-    disposers.push(()=>{window.removeEventListener('wheel',wheel);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchend',touchEnd);clearTimeout(unlockTimer)});
+    // Native wheel and touch scrolling are retained; only anchor links scroll programmatically.
   }
   function mount(){
     if(!shouldMount()||mounted||!window.__YC_MAINPAGE_FY27_HTML)return;

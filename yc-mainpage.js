@@ -84,12 +84,25 @@
       const pdfLink=e.target.closest('a[download][href$=".pdf"]');
       if(pdfLink){
         e.preventDefault();
-        const href=pdfLink.href,name=pdfLink.getAttribute('download')||'YC_시스템_포트폴리오.pdf';
-        fetch(href).then(r=>{if(!r.ok)throw Error('PDF response');return r.blob()}).then(blob=>{
-          const blobURL=URL.createObjectURL(blob),a=document.createElement('a');
-          a.href=blobURL;a.download=name;document.body.appendChild(a);a.click();a.remove();
+        const name=pdfLink.getAttribute('download')||'YC_시스템_포트폴리오.pdf';
+        const parts=window.__YC_MAINPAGE_PDF_PARTS=window.__YC_MAINPAGE_PDF_PARTS||[];
+        const loadPart=i=>new Promise((resolve,reject)=>{
+          if(parts[i]){resolve();return}
+          const script=document.createElement('script');
+          script.async=true;script.src=BASE+'yc-portfolio-part-'+(i+1)+'.js?v='+VERSION;
+          script.onload=()=>parts[i]?resolve():reject(new Error('PDF part missing'));
+          script.onerror=()=>reject(new Error('PDF part download failed'));
+          document.head.appendChild(script);
+        });
+        Promise.all(Array.from({length:7},(_,i)=>loadPart(i))).then(()=>{
+          const encoded=parts.join('');
+          const decoded=atob(encoded),bytes=new Uint8Array(decoded.length);
+          for(let i=0;i<decoded.length;i++)bytes[i]=decoded.charCodeAt(i);
+          const blobURL=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
+          const dl=document.createElement('a');dl.href=blobURL;dl.download=name;
+          document.body.appendChild(dl);dl.click();dl.remove();
           setTimeout(()=>URL.revokeObjectURL(blobURL),5000);
-        }).catch(()=>window.open(href,'_blank','noopener'));
+        }).catch(err=>{console.error('[YC Mainpage] PDF download failed',err);alert('포트폴리오 파일 다운로드에 실패했습니다. 잠시 후 다시 시도해 주세요.')});
       }
     };
     shadow.addEventListener('click',anchorClick);disposers.push(()=>shadow.removeEventListener('click',anchorClick));

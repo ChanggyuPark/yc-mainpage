@@ -1,7 +1,7 @@
 /*!
  * YC코퍼레이션 GNB 메가 메뉴
  * 식스샵 공통 코드 삽입 <head>에 아래 한 줄로 사용:
- *   <script defer src="https://yc-mkt.github.io/media/common/mega-menu.js"></script>
+ *   <script defer src="https://changgyupark.github.io/yc-mainpage/mega-menu.js?v=버전"></script>
  * 메뉴 내용은 MENUS 배열만 고치면 된다. label은 식스샵 대메뉴 이름과 똑같아야 연결된다.
  * PC(데스크톱 헤더)에만 적용되고, 모바일은 식스샵 기본 메뉴를 그대로 쓴다.
  *
@@ -21,21 +21,20 @@
       intro: { title: "회사소개", text: "중소 제조기업의 디지털 전환을 돕는 YC코퍼레이션을 소개합니다.", link: { nm: "회사소개 보기 →", url: "/company" } },
       groups: [
         { title: "YC코퍼레이션", items: [
-          { nm: "회사소개", ds: "비전과 사업 영역", url: "/company" },
-          { nm: "스마트제조 성공사례", ds: "도입 기업의 실제 사례", url: "/smartsuccess" },
-          { nm: "인재채용", ds: "상시 채용 안내", url: "/hr" }
+          { nm: "회사소개", url: "/company" },
+          { nm: "스마트제조 성공사례", url: "/smartsuccess" },
+          { nm: "인재채용", url: "/hr" }
         ]},
         { title: "협력", items: [
-          { nm: "기관 협력 제안", ds: "예술, 교육 기관 디지털 패브리케이션", url: "/digital-fabrication" },
-          { nm: "장비공급 협력사 모집", ds: "스마트제조 장비 파트너", url: "/smc" }
+          { nm: "기관 협력 제안", url: "/digital-fabrication" },
+          { nm: "장비공급 협력사 모집", url: "/smc" }
         ]}
       ]},
     { label: "솔루션",
       foot: { text: "필요한 솔루션을 모르겠다면 상담으로 시작하세요.", nm: "전체 솔루션 보기 →", url: "/smart-solutions" },
       groups: [
         { title: "디자인", url: "/smart-solutions#design", items: [
-          { nm: "3ds Max", ds: "3D 모델링, 렌더링", url: "/3dsmax" },
-          { nm: "Acrobat", ds: "PDF 문서 작업", url: "/acrobat" }
+          { nm: "3ds Max", ds: "3D 모델링, 렌더링", url: "/3dsmax" }
         ]},
         { title: "설계(CAD)", url: "/smart-solutions#cad", items: [
           { nm: "Fusion", ds: "설계부터 제조까지 클라우드 통합", url: "/fusion" },
@@ -45,7 +44,9 @@
         ]},
         { title: "가공(CAM)", url: "/smart-solutions#cam", items: [
           { nm: "ENCY CAM", ds: "CNC, 로봇 가공 CAM", url: "https://www.encycadcam.co.kr/", ext: true },
-          { nm: "PowerMill", ds: "고속 다축 가공", url: "/powermill" }
+          { nm: "ENCY Robot", ds: "로봇 가공, 시뮬레이션", url: "https://encycam.com/ency-robot/", ext: true },
+          { nm: "PowerMill", ds: "고속 다축 가공", url: "/powermill" },
+          { nm: "Carveco", ds: "목공, 조각 CAD/CAM", url: "https://carveco.co.kr/", ext: true }
         ]},
         { title: "공장 관리", url: "/smart-solutions#factory", items: [
           { nm: "Smart Line", ds: "생산관리 MES", url: "/smartline_24", own: true },
@@ -55,38 +56,41 @@
         ]},
         { title: "경영 관리", url: "/smart-solutions#business", items: [
           { nm: "Smart Dash", ds: "CRM과 그룹웨어 통합", url: "/smart-dash", own: true },
-          { nm: "업무관리 솔루션", ds: "업무용 소프트웨어 도입", url: "/business" }
+          { nm: "업무관리 솔루션", ds: "업무용 소프트웨어 도입", url: "/business" },
+          { nm: "Acrobat", ds: "PDF 문서 작업", url: "/acrobat" }
         ]},
         { title: "스마트 장비", url: "/smart-solutions#equipment", items: [
           { nm: "Smart Lift", ds: "근력보조슈트", url: "/smart-lift", own: true },
-          { nm: "ENCY Robot", ds: "로봇 가공, 시뮬레이션", url: "https://encycam.com/ency-robot/", ext: true }
+          { nm: "SmartWare", ds: "스마트 제조 장비", url: "https://smartware.kr/", ext: true },
+          { nm: "Nextwood", ds: "목공 CNC, 소프트웨어", url: "https://nextwood.co.kr/", ext: true }
         ]}
       ]},
     { label: "스마트공장",
       intro: { title: "스마트공장", text: "지원사업 활용부터 구축, 교육까지. 공장을 진단하고 필요한 것만 제안합니다.", link: { nm: "공장 진단 신청 →", url: "/smart-factory" } },
       groups: [
         { title: "지원사업", items: [
-          { nm: "스마트공장 구축", ds: "유형별 지원금과 구축 범위", url: "/smart-factory" },
-          { nm: "중소기업 혁신바우처", ds: "바우처로 솔루션 도입", url: "/sme-voucher" },
-          { nm: "제조 스마트화 지원사업", ds: "소상공인 스마트공방, 스마트제조", url: "/2026_smart" }
+          { nm: "스마트공장 구축", url: "/smart-factory" },
+          { nm: "중소기업 혁신바우처", url: "/sme-voucher" },
+          { nm: "제조 스마트화 지원사업", url: "/2026_smart" }
         ]},
         { title: "업종별 디지털 전환", items: [
-          { nm: "기계 제조", ds: "가공 데이터, 생산 관리", url: "/machine" },
-          { nm: "가구 목재", ds: "목공 CNC, 설계 자동화", url: "/wood" },
-          { nm: "의류 제조", ds: "패턴, 생산 공정 디지털화", url: "/fashion" }
+          { nm: "기계 제조", url: "/machine" },
+          { nm: "가구 목재", url: "/wood" },
+          { nm: "의류 제조", url: "/fashion" }
         ]}
       ]},
     { label: "교육&지원",
       intro: { title: "교육&지원", text: "정기교육과 세미나, 도입 후 기술지원까지 이어서 돕습니다.", link: { nm: "교육 일정 보기 →", url: "/event" } },
       groups: [
         { title: "교육", items: [
-          { nm: "교육&세미나", ds: "정기교육, 세미나 일정", url: "/event" },
-          { nm: "온라인교육", ds: "언제든 듣는 강의", url: "https://ycc.liveklass.com/", ext: true }
+          { nm: "연간교육 일정", url: "/event" },
+          { nm: "공공기관 교육", url: "/education" },
+          { nm: "온라인교육", url: "https://ycc.liveklass.com/", ext: true }
         ]},
         { title: "기술지원", items: [
-          { nm: "YC 케어", ds: "도입 고객 유지보수", url: "/yc_care" },
-          { nm: "기술 블로그", ds: "사용 팁과 업데이트 소식", url: "/blog" },
-          { nm: "기술지원 카페", ds: "질문하고 답 받기", url: "https://cafe.naver.com/ycsupport", ext: true }
+          { nm: "YC 케어", url: "/yc_care" },
+          { nm: "기술 블로그", url: "/blog" },
+          { nm: "기술지원 카페", url: "https://cafe.naver.com/ycsupport", ext: true }
         ]}
       ]}
   ];
@@ -134,7 +138,7 @@
         return '<a class="ycmm-item"' + attrs(it) + '><span class="ycmm-nm"><b>' + esc(it.nm) + "</b>" +
           (it.own ? ' <span class="ycmm-tag">자체 개발</span>' : "") +
           (it.ext ? ' <span class="ycmm-ext">↗</span>' : "") +
-          '</span><span class="ycmm-ds">' + esc(it.ds) + "</span></a>";
+          '</span>' + (it.ds ? '<span class="ycmm-ds">' + esc(it.ds) + "</span>" : "") + "</a>";
       }).join("") + "</div>";
     }).join("") + "</div>";
     var foot = m.foot ? '<div class="ycmm-foot"><span>' + esc(m.foot.text) + '</span><a href="' + esc(m.foot.url) + '">' + esc(m.foot.nm) + "</a></div>" : "";

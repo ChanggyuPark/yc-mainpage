@@ -1,0 +1,172 @@
+/* YC Mainpage FY27 — SIXSHOP loader v20261123-01 */
+(() => {
+  'use strict';
+  const PATH = '/main-page-fy27';
+  const PAGE_ID = 'page2768172';
+  const APP_ID = 'yc-mainpage-fy27-app';
+  const BASE = 'https://changgyupark.github.io/yc-mainpage/';
+  const VERSION = '20261123-01';
+  const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
+  const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  let mounted=null, loading=null, titleBefore=null;
+  let disposers=[];
+  let rootGuard=false;
+  const hasRoute = () => location.pathname === PATH;
+  const page = () => document.getElementById(PAGE_ID);
+  const shouldMount = () => hasRoute() && !!page();
+  function getTrackedUtms() {
+    try { return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {}; }
+    catch (_) { return {}; }
+  }
+  function storeIncomingUtms() {
+    const query=new URLSearchParams(location.search);
+    if (!UTM.some(k=>query.has(k))) return;
+    const current={};
+    // A new ad entry replaces the previous attribution rather than mixing old/new campaigns.
+    UTM.forEach(k=>{ if(query.has(k)) current[k]=query.get(k); });
+    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(current)); } catch (_) {}
+  }
+  function updateFormLinks(shadow) {
+    const values=getTrackedUtms();
+    shadow.querySelectorAll('a[href]').forEach(a => {
+      let u;
+      try{u=new URL(a.getAttribute('href'),location.href)}catch(_){return}
+      if(!(/(^|\.)forms\.monday\.com$/.test(u.hostname)||u.hostname==='wkf.ms')) return;
+      for(const k of UTM){
+        if(Object.prototype.hasOwnProperty.call(values,k)) u.searchParams.set(k,values[k]);
+      }
+      a.href=u.toString();
+    });
+  }
+  function unmount(){
+    if (!mounted) return;
+    for(const fn of disposers.splice(0)){try{fn()}catch(_){}}
+    for(const [el,display] of mounted.hidden){
+      if(el.isConnected)el.style.display=display;
+    }
+    mounted.root.remove();
+    mounted=null;
+    if(titleBefore!==null){document.title=titleBefore;titleBefore=null;}
+  }
+  function hideExistingPageSections(host,root,hidden){
+    for(const el of Array.from(host.children)){
+      if(el===root||hidden.has(el))continue;
+      hidden.set(el,el.style.display);
+      el.style.display='none';
+    }
+  }
+  function initInteractions(shadow,root){
+    const get=s=>shadow.querySelector(s);
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduced)root.classList.add('reduce-motion');
+    const reveals=shadow.querySelectorAll('.reveal-up');
+    if(!reduced&&'IntersectionObserver' in window){
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}});
+      },{threshold:.08});
+      reveals.forEach(e=>io.observe(e));
+      disposers.push(()=>io.disconnect());
+    }else{reveals.forEach(e=>e.classList.add('is-visible'))}
+    const map=get('.lifecycle');
+    if(map&&'IntersectionObserver' in window){
+      const obs=new IntersectionObserver(es=>es.forEach(e=>map.classList.toggle('flow-visible',e.isIntersecting)),{threshold:.06});
+      obs.observe(map); disposers.push(()=>obs.disconnect());
+    }
+    const anchorClick=e=>{
+      const a=e.target.closest('a[href^="#"]');
+      if(a){
+        let id;
+        try{id=decodeURIComponent(a.getAttribute('href').slice(1))}catch(_){return}
+        const target=shadow.getElementById(id);
+        if(target){e.preventDefault();target.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});}
+      }
+      // Preserve "download PDF" behavior for cross-origin GitHub Pages files.
+      const pdfLink=e.target.closest('a[download][href$=".pdf"]');
+      if(pdfLink){
+        e.preventDefault();
+        const href=pdfLink.href,name=pdfLink.getAttribute('download')||'YC_시스템_포트폴리오.pdf';
+        fetch(href).then(r=>{if(!r.ok)throw Error('PDF response');return r.blob()}).then(blob=>{
+          const blobURL=URL.createObjectURL(blob),a=document.createElement('a');
+          a.href=blobURL;a.download=name;document.body.appendChild(a);a.click();a.remove();
+          setTimeout(()=>URL.revokeObjectURL(blobURL),5000);
+        }).catch(()=>window.open(href,'_blank','noopener'));
+      }
+    };
+    shadow.addEventListener('click',anchorClick);disposers.push(()=>shadow.removeEventListener('click',anchorClick));
+    // Source HTML's wheel/touch step-jump behavior, with detachable handlers for SPA navigation.
+    const hero=get('.yc-cover'),overview=get('#manufacturing'),firstStage=get('#stage-1');
+    if (!hero||!overview||!firstStage||reduced)return;
+    let locked=false,startY=0,unlockTimer=0;
+    const inView=el=>{const r=el.getBoundingClientRect();return r.top<innerHeight*.65&&r.bottom>innerHeight*.35};
+    function targetNext(){
+      if(inView(hero)&&scrollY<hero.offsetHeight*.75)return overview;
+      if(inView(overview)||inView(map||overview)){
+        const r=firstStage.getBoundingClientRect();
+        if(r.top>innerHeight*.15)return firstStage;
+      }
+      return null;
+    }
+    function advance(){if(locked)return false;const el=targetNext();if(!el)return false;
+      locked=true;el.scrollIntoView({behavior:'smooth',block:'start'});
+      unlockTimer=setTimeout(()=>locked=false,950);return true;
+    }
+    const wheel=e=>{if(!root.isConnected||e.ctrlKey||e.metaKey||e.deltaY<24||locked)return;
+      if(targetNext()){e.preventDefault();advance()}};
+    const touchStart=e=>{startY=e.touches[0]?.clientY??0};
+    const touchEnd=e=>{const delta=startY-(e.changedTouches[0]?.clientY??startY);if(delta>56)advance()};
+    window.addEventListener('wheel',wheel,{passive:false});
+    window.addEventListener('touchstart',touchStart,{passive:true});
+    window.addEventListener('touchend',touchEnd,{passive:true});
+    disposers.push(()=>{window.removeEventListener('wheel',wheel);window.removeEventListener('touchstart',touchStart);window.removeEventListener('touchend',touchEnd);clearTimeout(unlockTimer)});
+  }
+  function mount(){
+    if(!shouldMount()||mounted||!window.__YC_MAINPAGE_FY27_HTML)return;
+    const host=page();
+    const root=document.createElement('div');root.id=APP_ID;
+    root.style.cssText='display:block;width:100%;min-width:0;visibility:hidden';
+    const shadow=root.attachShadow({mode:'open'});
+    // Shadow root keeps all source selectors isolated from SIXSHOP header/footer and other pages.
+    const style=document.createElement('link');style.rel='stylesheet';style.href=BASE+'yc-mainpage.css?v='+VERSION;
+    const body=document.createElement('div');body.innerHTML=window.__YC_MAINPAGE_FY27_HTML;
+    shadow.append(style,body);
+    const hidden=new Map();
+    host.appendChild(root);
+    hideExistingPageSections(host,root,hidden);
+    mounted={root,host,hidden};
+    const show=()=>{if(mounted?.root===root)root.style.visibility='visible'};
+    style.addEventListener('load',show,{once:true});style.addEventListener('error',show,{once:true});
+    const t=setTimeout(show,3500);disposers.push(()=>clearTimeout(t));
+    titleBefore=document.title;
+    document.title='제조 현장을 연결하는 통합 솔루션 | YC코퍼레이션';
+    storeIncomingUtms();
+    updateFormLinks(shadow);
+    initInteractions(shadow,root);
+  }
+  function loadPayload(){
+    if(loading||window.__YC_MAINPAGE_FY27_HTML)return;
+    const script=document.createElement('script');
+    script.src=BASE+'yc-mainpage-content.js?v='+VERSION;script.async=true;
+    script.onload=()=>{loading=null;sync()};
+    script.onerror=()=>{loading=null;console.error('[YC Mainpage] Content failed to load')};
+    loading=script;document.head.appendChild(script);
+  }
+  function sync(){
+    if(rootGuard)return;
+    rootGuard=true;
+    try{
+      if(!shouldMount()) {unmount();return}
+      storeIncomingUtms();
+      if(mounted){
+        if(mounted.host!==page()||!mounted.root.isConnected){unmount()}
+        else {hideExistingPageSections(mounted.host,mounted.root,mounted.hidden);updateFormLinks(mounted.root.shadowRoot);return}
+      }
+      if(window.__YC_MAINPAGE_FY27_HTML)mount();else loadPayload();
+    }finally{rootGuard=false;}
+  }
+  // Cheap route guard also handles SIXSHOP SPA pushState navigation without patching History APIs.
+  window.addEventListener('popstate',sync);
+  window.addEventListener('pageshow',sync);
+  document.addEventListener('DOMContentLoaded',sync,{once:true});
+  setInterval(sync,450);
+  sync();
+})();

@@ -22,7 +22,6 @@
       groups: [
         { title: "YC코퍼레이션", items: [
           { nm: "회사소개", url: "/company" },
-          { nm: "스마트제조 성공사례", url: "/smartsuccess" },
           { nm: "인재채용", url: "/hr" }
         ]},
         { title: "협력", items: [
@@ -71,7 +70,8 @@
         { title: "지원사업", items: [
           { nm: "스마트공장 구축", url: "/smart-factory" },
           { nm: "중소기업 혁신바우처", url: "/sme-voucher" },
-          { nm: "제조 스마트화 지원사업", url: "/2026_smart" }
+          { nm: "제조 스마트화 지원사업", url: "/2026_smart" },
+          { nm: "스마트제조 성공사례", url: "/smartsuccess" }
         ]},
         { title: "업종별 디지털 전환", items: [
           { nm: "기계 제조", url: "/machine" },
@@ -83,9 +83,9 @@
       intro: { title: "교육&지원", text: "정기교육과 세미나, 도입 후 기술지원까지 이어서 돕습니다.", link: { nm: "교육 일정 보기 →", url: "/event" } },
       groups: [
         { title: "교육", items: [
-          { nm: "연간교육 일정", url: "/event" },
+          { nm: "통합 교육 일정", url: "/event" },
           { nm: "공공기관 교육", url: "/education" },
-          { nm: "온라인교육", url: "https://ycc.liveklass.com/", ext: true }
+          { nm: "온라인 교육", url: "https://ycc.liveklass.com/", ext: true }
         ]},
         { title: "기술지원", items: [
           { nm: "YC 케어", url: "/yc_care" },

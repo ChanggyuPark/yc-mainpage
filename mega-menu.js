@@ -60,8 +60,8 @@
         ]},
         { title: "스마트 장비", url: "/smart-solutions#equipment", items: [
           { nm: "Smart Lift", ds: "근력보조슈트", url: "/smart-lift", own: true },
-          { nm: "SmartWare", ds: "스마트 제조 장비", url: "https://smartware.kr/", ext: true },
-          { nm: "Nextwood", ds: "목공 CNC, 소프트웨어", url: "https://nextwood.co.kr/", ext: true }
+          { nm: "Smart Ware", ds: "스마트 제조 장비", url: "https://smartware.kr/", ext: true },
+          { nm: "Next Wood", ds: "목공 CNC, 소프트웨어", url: "https://nextwood.co.kr/", ext: true }
         ]}
       ]},
     { label: "스마트공장",

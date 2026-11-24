@@ -4,7 +4,7 @@
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261124-07';
+  const VERSION = '20261124-08';
   const HERO_LOGO_URL = 'https://ik.imagekit.io/smartware/yc/yc-mainpage/yc-logo';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];

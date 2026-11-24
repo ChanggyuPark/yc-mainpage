@@ -1,10 +1,10 @@
-/* YC Mainpage FY27 — SIXSHOP loader v20261124-04 */
+/* YC Mainpage FY27 — SIXSHOP loader v20261124-05 */
 (() => {
   'use strict';
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261124-04';
+  const VERSION = '20261124-05';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
@@ -124,7 +124,7 @@
     const oldKickerNodes=[];
     const walker=document.createTreeWalker(hero,NodeFilter.SHOW_TEXT);
     let textNode;
-    const normalized=text=>(text||'').replace(/[\\s·∙・.\\-]/g,'').toUpperCase();
+    const normalized=text=>(text||'').replace(/[\s·∙・.\-]/g,'').toUpperCase();
     while((textNode=walker.nextNode())){
       if(normalized(textNode.nodeValue)!=='DXAXROBOT')continue;
       const parent=textNode.parentElement;

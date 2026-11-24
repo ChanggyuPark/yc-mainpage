@@ -4,7 +4,8 @@
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261124-05';
+  const VERSION = '20261124-06';
+  const HERO_LOGO_URL = 'https://ik.imagekit.io/smartware/yc/yc-mainpage/yc-logo';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
@@ -107,6 +108,16 @@
     shadow.addEventListener('click',anchorClick);disposers.push(()=>shadow.removeEventListener('click',anchorClick));
     // Native wheel and touch scrolling are retained; only anchor links scroll programmatically.
   }
+  function prioritizeHeroLogo(){
+    if(document.querySelector('link[data-yc-mainpage-hero-preload]'))return;
+    const preload=document.createElement('link');
+    preload.rel='preload';
+    preload.as='image';
+    preload.href=HERO_LOGO_URL;
+    preload.setAttribute('fetchpriority','high');
+    preload.setAttribute('data-yc-mainpage-hero-preload','');
+    document.head.appendChild(preload);
+  }
   function updateHeroHeading(shadow){
     // Edit only the original main Hero heading. Never change the SIXSHOP header or other sections.
     const heading=Array.from(shadow.querySelectorAll('.hero h1, .yc-cover h1, h1'))
@@ -116,9 +127,10 @@
     if(!hero)return;
     const logo=document.createElement('img');
     logo.className='yc-hero-heading-logo';
-    logo.src='https://ik.imagekit.io/smartware/yc/yc-mainpage/yc-logo';
+    logo.src=HERO_LOGO_URL;
+    logo.fetchPriority='high';
     logo.alt='(주)YC코퍼레이션';
-    logo.decoding='async';
+    logo.decoding='sync';
     // Remove the original small kicker including its underline/wrapper.
     // Match text nodes rather than element.textContent so nested spans still work.
     const oldKickerNodes=[];
@@ -175,7 +187,7 @@
     if(!shouldMount()||mounted||!window.__YC_MAINPAGE_FY27_HTML)return;
     const host=page();
     const root=document.createElement('div');root.id=APP_ID;
-    root.style.cssText='display:block;width:100%;min-width:0;visibility:hidden';
+    root.style.cssText='display:block;width:100%;max-width:100%;min-width:0;overflow-x:clip;visibility:hidden';
     const shadow=root.attachShadow({mode:'open'});
     // Shadow root keeps all source selectors isolated from SIXSHOP header/footer and other pages.
     const style=document.createElement('link');style.rel='stylesheet';style.href=BASE+'yc-mainpage.css?v='+VERSION;
@@ -208,6 +220,7 @@
     rootGuard=true;
     try{
       if(!shouldMount()) {unmount();return}
+      prioritizeHeroLogo();
       storeIncomingUtms();
       if(mounted){
         if(mounted.host!==page()||!mounted.root.isConnected){unmount()}

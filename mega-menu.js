@@ -67,10 +67,10 @@
         ]}
       ]},
     { label: "스마트공장",
-      intro: { title: "스마트공장", text: "지원사업 활용부터 구축, 교육까지. 공장을 진단하고 필요한 것만 제안합니다.", link: { nm: "공장 진단 신청 →", url: "/smart-factory" } },
+      intro: { title: "스마트공장", text: "지원사업 활용부터 구축, 교육까지. 공장을 진단하고 필요한 것만 제안합니다.", link: { nm: "공장 진단 신청 →", url: "/smart-factory-2027" } },
       groups: [
         { title: "지원사업", items: [
-          { nm: "스마트공장 구축", url: "/smart-factory" },
+          { nm: "스마트공장 구축", url: "/smart-factory-2027" },
           { nm: "중소기업 혁신바우처", url: "/sme-voucher" },
           { nm: "제조 스마트화 지원사업", url: "/2026_smart" },
           { nm: "스마트제조 성공사례", url: "/smartsuccess" }

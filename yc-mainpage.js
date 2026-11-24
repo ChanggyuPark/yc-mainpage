@@ -4,7 +4,7 @@
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261124-06';
+  const VERSION = '20261124-07';
   const HERO_LOGO_URL = 'https://ik.imagekit.io/smartware/yc/yc-mainpage/yc-logo';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
@@ -165,7 +165,7 @@
     heading.classList.add('yc-hero-new-title');
     heading.replaceChildren();
     const lines=[
-      ['yc-hero-new-intro','디자인, 설계, 제조, 경영, 유통을 연결하는'],
+      ['yc-hero-new-intro','디자인 - 설계 - 제조 - 경영 - 유통을 연결하는'],
       ['yc-hero-new-emphasis','DX · AX · ROBOT'],
       ['yc-hero-new-sub','시스템 개발']
     ];
@@ -175,9 +175,9 @@
       .yc-hero-brandmark{display:flex;flex-direction:column;align-items:center;gap:14px;width:max-content;max-width:90%;margin:0 auto 32px}\n      .yc-hero-brandmark:after{content:'';display:block;width:min(340px,78vw);max-width:110%;height:2px;background:rgba(255,255,255,.85);border-radius:2px}\n      .yc-hero-heading-logo{display:block;width:clamp(185px,18vw,265px);max-width:100%;height:auto;object-fit:contain}
       .yc-hero-new-title{display:flex!important;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:0 auto!important;max-width:1200px;line-height:1.1!important}
       .yc-hero-new-title span{display:block;max-width:100%;white-space:normal}
-      .yc-hero-new-title .yc-hero-new-intro{font-size:clamp(21px,2.1vw,37px);font-weight:400;line-height:1.35;letter-spacing:-.045em;color:#fff}
-      .yc-hero-new-title .yc-hero-new-emphasis{font-size:clamp(44px,5.5vw,94px);font-weight:850;line-height:1.08;letter-spacing:-.045em;white-space:nowrap;color:#e0e9ff;text-shadow:0 0 16px rgba(154,185,255,.42)}
-      .yc-hero-new-title .yc-hero-new-sub{font-size:clamp(26px,3vw,51px);font-weight:720;line-height:1.2;color:#e0e9ff;letter-spacing:-.05em}
+      .yc-hero-new-title .yc-hero-new-intro{font-size:clamp(21px,2.1vw,37px);font-weight:400;line-height:1.35;letter-spacing:-.045em;color:#fff;text-shadow:0 2px 8px rgba(0,10,45,.65)}
+      .yc-hero-new-title .yc-hero-new-emphasis{font-size:clamp(44px,5.5vw,94px);font-weight:850;line-height:1.08;letter-spacing:-.045em;white-space:nowrap;color:#fff;text-shadow:0 3px 14px rgba(0,10,45,.58)}
+      .yc-hero-new-title .yc-hero-new-sub{font-size:clamp(26px,3vw,51px);font-weight:720;line-height:1.2;color:#fff;letter-spacing:-.05em;text-shadow:0 2px 10px rgba(0,10,45,.55)}
       @media(max-width:780px){.yc-hero-heading-logo{width:min(215px,58vw);margin-bottom:22px}.yc-hero-new-title{gap:9px}.yc-hero-new-title .yc-hero-new-intro{font-size:clamp(17px,4.1vw,23px)}.yc-hero-new-title .yc-hero-new-emphasis{font-size:clamp(30px,8vw,58px);letter-spacing:-.055em}.yc-hero-new-title .yc-hero-new-sub{font-size:clamp(24px,5.8vw,37px)}}
       @media(max-width:380px){.yc-hero-new-title .yc-hero-new-emphasis{font-size:8vw}}
     `;

@@ -1,10 +1,10 @@
-/* YC Mainpage FY27 — SIXSHOP loader v20261124-01 */
+/* YC Mainpage FY27 — SIXSHOP loader v20261124-02 */
 (() => {
   'use strict';
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261124-01';
+  const VERSION = '20261124-02';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
@@ -110,7 +110,7 @@
   function updateHeroHeading(shadow){
     // Edit only the original main Hero heading. Never change the SIXSHOP header or other sections.
     const heading=Array.from(shadow.querySelectorAll('.hero h1, .yc-cover h1, h1'))
-      .find(el=>/설계부터\\s*공장\\s*관리까지/.test(el.textContent||'') && /제조\\s*현장을\\s*하나로\\s*연결합니다/.test(el.textContent||''));
+      .find(el=>/설계부터\s*공장\s*관리까지/.test(el.textContent||'') && /제조\s*현장을\s*하나로\s*연결합니다/.test(el.textContent||''));
     if(!heading)return;
     const hero=heading.closest('.hero,.yc-cover')||heading.parentElement;
     if(!hero)return;
@@ -119,7 +119,7 @@
     logo.src='https://ik.imagekit.io/smartware/yc/yc-mainpage/yc-logo';
     logo.alt='(주)YC코퍼레이션';
     logo.decoding='async';
-    const isOldLabel=el=>/^DX[\\s·∙・.\\-]*AX[\\s·∙・.\\-]*ROBOT$/i.test((el.textContent||'').trim());
+    const isOldLabel=el=>/^DX[\s·∙・.\-]*AX[\s·∙・.\-]*ROBOT$/i.test((el.textContent||'').trim());
     const labels=Array.from(hero.querySelectorAll('p,span,small,div')).filter(isOldLabel);
     const label=labels.find(el=>!Array.from(el.children).some(isOldLabel))||null;
     if(label)label.replaceWith(logo);else heading.before(logo);

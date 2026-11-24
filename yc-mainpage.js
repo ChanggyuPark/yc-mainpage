@@ -1,10 +1,10 @@
-/* YC Mainpage FY27 — SIXSHOP loader v20261123-04 */
+/* YC Mainpage FY27 — SIXSHOP loader v20261124-01 */
 (() => {
   'use strict';
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261123-04';
+  const VERSION = '20261124-01';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
@@ -107,6 +107,43 @@
     shadow.addEventListener('click',anchorClick);disposers.push(()=>shadow.removeEventListener('click',anchorClick));
     // Native wheel and touch scrolling are retained; only anchor links scroll programmatically.
   }
+  function updateHeroHeading(shadow){
+    // Edit only the original main Hero heading. Never change the SIXSHOP header or other sections.
+    const heading=Array.from(shadow.querySelectorAll('.hero h1, .yc-cover h1, h1'))
+      .find(el=>/설계부터\\s*공장\\s*관리까지/.test(el.textContent||'') && /제조\\s*현장을\\s*하나로\\s*연결합니다/.test(el.textContent||''));
+    if(!heading)return;
+    const hero=heading.closest('.hero,.yc-cover')||heading.parentElement;
+    if(!hero)return;
+    const logo=document.createElement('img');
+    logo.className='yc-hero-heading-logo';
+    logo.src='https://ik.imagekit.io/smartware/yc/yc-mainpage/yc-logo';
+    logo.alt='(주)YC코퍼레이션';
+    logo.decoding='async';
+    const isOldLabel=el=>/^DX[\\s·∙・.\\-]*AX[\\s·∙・.\\-]*ROBOT$/i.test((el.textContent||'').trim());
+    const labels=Array.from(hero.querySelectorAll('p,span,small,div')).filter(isOldLabel);
+    const label=labels.find(el=>!Array.from(el.children).some(isOldLabel))||null;
+    if(label)label.replaceWith(logo);else heading.before(logo);
+    heading.classList.add('yc-hero-new-title');
+    heading.replaceChildren();
+    const lines=[
+      ['yc-hero-new-intro','디자인, 설계, 제조, 경영, 유통을 연결하는'],
+      ['yc-hero-new-emphasis','DX · AX · ROBOT'],
+      ['yc-hero-new-sub','시스템 개발']
+    ];
+    lines.forEach(([className,value])=>{const line=document.createElement('span');line.className=className;line.textContent=value;heading.appendChild(line)});
+    const scoped=document.createElement('style');
+    scoped.textContent=`
+      .yc-hero-heading-logo{display:block;width:clamp(185px,18vw,265px);max-width:75%;height:auto;object-fit:contain;margin:0 auto 32px}
+      .yc-hero-new-title{display:flex!important;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:0 auto!important;max-width:1200px;line-height:1.1!important}
+      .yc-hero-new-title span{display:block;max-width:100%;white-space:normal}
+      .yc-hero-new-title .yc-hero-new-intro{font-size:clamp(21px,2.1vw,37px);font-weight:400;line-height:1.35;letter-spacing:-.045em;color:#fff}
+      .yc-hero-new-title .yc-hero-new-emphasis{font-size:clamp(44px,5.5vw,94px);font-weight:850;line-height:1.08;letter-spacing:-.045em;white-space:nowrap;color:#e0e9ff;text-shadow:0 0 16px rgba(154,185,255,.42)}
+      .yc-hero-new-title .yc-hero-new-sub{font-size:clamp(26px,3vw,51px);font-weight:720;line-height:1.2;color:#e0e9ff;letter-spacing:-.05em}
+      @media(max-width:780px){.yc-hero-heading-logo{width:min(215px,58vw);margin-bottom:22px}.yc-hero-new-title{gap:9px}.yc-hero-new-title .yc-hero-new-intro{font-size:clamp(17px,4.1vw,23px)}.yc-hero-new-title .yc-hero-new-emphasis{font-size:clamp(30px,8vw,58px);letter-spacing:-.055em}.yc-hero-new-title .yc-hero-new-sub{font-size:clamp(24px,5.8vw,37px)}}
+      @media(max-width:380px){.yc-hero-new-title .yc-hero-new-emphasis{font-size:8vw}}
+    `;
+    shadow.appendChild(scoped);
+  }
   function mount(){
     if(!shouldMount()||mounted||!window.__YC_MAINPAGE_FY27_HTML)return;
     const host=page();
@@ -117,6 +154,7 @@
     const style=document.createElement('link');style.rel='stylesheet';style.href=BASE+'yc-mainpage.css?v='+VERSION;
     const body=document.createElement('div');body.innerHTML=window.__YC_MAINPAGE_FY27_HTML;
     shadow.append(style,body);
+    updateHeroHeading(shadow);
     const hidden=new Map();
     host.appendChild(root);
     hideExistingPageSections(host,root,hidden);

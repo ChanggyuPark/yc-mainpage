@@ -11,7 +11,9 @@
  */
 (function () {
   "use strict";
-  var TEST_ONLY = true;
+  var TEST_ONLY = false;
+  // 솔루션 허브(/smart-solutions) 완성 전까지 false: 카테고리 제목 링크와 "전체 솔루션 보기" 숨김
+  var SOLUTION_HUB = false;
   if (TEST_ONLY && !/[?&]ycmm=1(&|$)/.test(location.search)) return;
   if (window.__ycMegaMenu) return;
   window.__ycMegaMenu = true;
@@ -133,7 +135,7 @@
   function panelHtml(m, i) {
     var intro = m.intro ? '<div class="ycmm-intro"><h3>' + esc(m.intro.title) + "</h3><p>" + esc(m.intro.text) + '</p><a href="' + esc(m.intro.link.url) + '">' + esc(m.intro.link.nm) + "</a></div>" : "";
     var cols = '<div class="ycmm-cols">' + m.groups.map(function (g) {
-      var h = g.url ? '<a href="' + esc(g.url) + '">' + esc(g.title) + "</a>" : esc(g.title);
+      var h = (g.url && (SOLUTION_HUB || g.url.indexOf("/smart-solutions") !== 0)) ? '<a href="' + esc(g.url) + '">' + esc(g.title) + "</a>" : esc(g.title);
       return '<div class="ycmm-col"><h4>' + h + "</h4>" + g.items.map(function (it) {
         return '<a class="ycmm-item"' + attrs(it) + '><span class="ycmm-nm"><b>' + esc(it.nm) + "</b>" +
           (it.own ? ' <span class="ycmm-tag">자체 개발</span>' : "") +
@@ -141,7 +143,7 @@
           '</span>' + (it.ds ? '<span class="ycmm-ds">' + esc(it.ds) + "</span>" : "") + "</a>";
       }).join("") + "</div>";
     }).join("") + "</div>";
-    var foot = m.foot ? '<div class="ycmm-foot"><span>' + esc(m.foot.text) + '</span><a href="' + esc(m.foot.url) + '">' + esc(m.foot.nm) + "</a></div>" : "";
+    var foot = (m.foot && (SOLUTION_HUB || m.foot.url.indexOf("/smart-solutions") !== 0)) ? '<div class="ycmm-foot"><span>' + esc(m.foot.text) + '</span><a href="' + esc(m.foot.url) + '">' + esc(m.foot.nm) + "</a></div>" : "";
     return '<div class="ycmm-panel' + (m.intro ? "" : " ycmm-noi") + '" data-i="' + i + '"><div class="ycmm-body">' + intro + cols + "</div>" + foot + "</div>";
   }
 

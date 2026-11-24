@@ -1,10 +1,10 @@
-/* YC Mainpage FY27 — SIXSHOP loader v20261124-02 */
+/* YC Mainpage FY27 — SIXSHOP loader v20261124-03 */
 (() => {
   'use strict';
   const PAGE_ID = 'page2768172';
   const APP_ID = 'yc-mainpage-fy27-app';
   const BASE = 'https://changgyupark.github.io/yc-mainpage/';
-  const VERSION = '20261124-02';
+  const VERSION = '20261124-03';
   const STORAGE_KEY = 'yc-mainpage-fy27:utm:v1';
   const UTM = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   let mounted=null, loading=null, titleBefore=null;
@@ -120,9 +120,23 @@
     logo.alt='(주)YC코퍼레이션';
     logo.decoding='async';
     const isOldLabel=el=>/^DX[\s·∙・.\-]*AX[\s·∙・.\-]*ROBOT$/i.test((el.textContent||'').trim());
-    const labels=Array.from(hero.querySelectorAll('p,span,small,div')).filter(isOldLabel);
+    const labels=Array.from(hero.querySelectorAll('p,span,small,strong,b,div')).filter(isOldLabel);
     const label=labels.find(el=>!Array.from(el.children).some(isOldLabel))||null;
-    if(label)label.replaceWith(logo);else heading.before(logo);
+    const brand=document.createElement('div');
+    brand.className='yc-hero-brandmark';
+    brand.appendChild(logo);
+    if(label)label.replaceWith(brand);else heading.before(brand);
+    // Remove other duplicate top labels while keeping the intended bold line in the new title.
+    Array.from(hero.querySelectorAll('p,span,small,strong,b')).filter(isOldLabel)
+      .filter(el=>!el.closest('h1,h2,h3')).forEach(el=>el.remove());
+    // Remove the original two-line explanatory copy; leave the CTA links unchanged.
+    const desc=Array.from(hero.querySelectorAll('p,span,div')).filter(el=>
+      /설계\s*소프트웨어와\s*로봇\s*자동화/.test(el.textContent||'') &&
+      /현장에\s*필요한\s*솔루션을\s*연결하고\s*구축합니다/.test(el.textContent||''))
+      .find(el=>!Array.from(el.children).some(child=>
+        /설계\s*소프트웨어와\s*로봇\s*자동화/.test(child.textContent||'') &&
+        /현장에\s*필요한\s*솔루션을\s*연결하고\s*구축합니다/.test(child.textContent||'')));
+    if(desc&&!desc.querySelector('a,button'))desc.remove();
     heading.classList.add('yc-hero-new-title');
     heading.replaceChildren();
     const lines=[
@@ -133,7 +147,7 @@
     lines.forEach(([className,value])=>{const line=document.createElement('span');line.className=className;line.textContent=value;heading.appendChild(line)});
     const scoped=document.createElement('style');
     scoped.textContent=`
-      .yc-hero-heading-logo{display:block;width:clamp(185px,18vw,265px);max-width:75%;height:auto;object-fit:contain;margin:0 auto 32px}
+      .yc-hero-brandmark{display:flex;flex-direction:column;align-items:center;gap:14px;width:max-content;max-width:80%;margin:0 auto 32px}\n      .yc-hero-brandmark:after{content:'';display:block;width:76%;height:2px;background:rgba(255,255,255,.85);border-radius:2px}\n      .yc-hero-heading-logo{display:block;width:clamp(185px,18vw,265px);max-width:100%;height:auto;object-fit:contain}
       .yc-hero-new-title{display:flex!important;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:0 auto!important;max-width:1200px;line-height:1.1!important}
       .yc-hero-new-title span{display:block;max-width:100%;white-space:normal}
       .yc-hero-new-title .yc-hero-new-intro{font-size:clamp(21px,2.1vw,37px);font-weight:400;line-height:1.35;letter-spacing:-.045em;color:#fff}

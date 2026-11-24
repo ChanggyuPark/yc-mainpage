@@ -1029,3 +1029,20 @@ body{overflow-x:clip}
 @media(max-width:780px){
   .yc-cover .yc-motion-overlay{width:100vw!important;left:50%!important;right:auto!important;}
 }
+
+/* v21 — Reduce the Hero's blue/cyan wash while retaining the dark photograph.
+   The animated light fades near the CTA instead of covering the entire Hero. */
+.yc-cover::before{
+  opacity:.48!important;
+}
+.yc-cover .yc-motion-overlay{
+  opacity:.52!important;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 44%,rgba(0,0,0,.48) 61%,rgba(0,0,0,.12) 74%,transparent 88%)!important;
+  mask-image:linear-gradient(to bottom,#000 0%,#000 44%,rgba(0,0,0,.48) 61%,rgba(0,0,0,.12) 74%,transparent 88%)!important;
+}
+.yc-cover .yc-motion-beam,.yc-cover .yc-motion-bloom{
+  filter:blur(43px) brightness(.65)!important;
+}
+@media(max-width:780px){
+  .yc-cover .yc-motion-overlay{opacity:.48!important}
+}
